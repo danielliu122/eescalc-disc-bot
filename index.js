@@ -32,8 +32,12 @@ client.on("messageCreate", message => {
     const defaultsfp = [0, 5, 10]
 
     var start = parseFloat(toLoop[1])
+    if (start < 0) start = 0
     var end = parseFloat(toLoop[2])
+    if (end > 15) end = 15
     var simulations = parseFloat(toLoop[3])
+    if (simulations > 999) simulations = 999
+
     var sfp = toLoop[4]
     if (sfp === undefined) sfp = defaultsfp
     else sfp = toLoop[4] + defaultsfp
