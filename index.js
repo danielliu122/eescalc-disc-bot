@@ -32,17 +32,17 @@ while (client === undefined && onRdy == false) {
   }
   catch {
     onRdy = false
-    timeoutLen += 5000
-    if (timeoutLen >= 60000) timeoutLen = 5000
-    console.log("Client is not responding... trying to connect again in + ${timeoutLen} + seconds...")
-    setTimeout(timeoutLen)
+    // timeoutLen += 5000
+    // if (timeoutLen >= 60000) timeoutLen = 5000
+    // console.log("Client is not responding... trying to connect again in + ${timeoutLen} + seconds...")
+    // //setTimeout(timeoutLen)
   }
 }
 
 client.on("messageCreate", message => {
   if (message.content === "ping") {
     message.channel.send("pong");
-    setTimeout(3333)
+    //message.timeo
   }
   const toLoop = message.content.split(" ")
   if (toLoop[0] === 'eescalc') {
@@ -73,7 +73,7 @@ client.on("messageCreate", message => {
     console.log(start, end, simulations, sfp)
     var msg = averageAeesCalc(start, end, simulations, sfp)
     message.channel.send(msg.toString())
-    setTimeout(3333)
+    //setTimeout(3333)
   }
 });
 
