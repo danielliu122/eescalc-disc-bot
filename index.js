@@ -1,27 +1,39 @@
 const express = require("express");
 const app = express();
+const Discord = require("discord.js");
+//const client = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES"] });
 const { averageAeesCalc, averageEesCalc } = require('./eescalc.js');
+
+var onRdy = false
+var client = undefined
 
 app.listen(3000, () => {
   console.log("App is running");
 });
+
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-const Discord = require("discord.js");
-//const client = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES"] });
+while (client === undefined && onRdy == false) {
+  try {
+    client = new Discord.Client({
+      intents: 131071,
+      partials: ['CHANNEL', 'GUILD_MEMBER', 'GUILD_SCHEDULED_EVENT', 'MESSAGE', 'REACTION', 'USER']
+    })
+    client.login(process.env['token']);
 
-const client = new Discord.Client({
-  intents: 131071,
-  partials: ['CHANNEL', 'GUILD_MEMBER', 'GUILD_SCHEDULED_EVENT', 'MESSAGE', 'REACTION', 'USER']
-})
-
-client.on('ready', () => {
-  console.log('I am ready!');
-});
-
-
+    client.on('ready', () => {
+      console.log('I am ready!');
+      onRdy = true
+    });
+  }
+  catch {
+    console.log("Client is not responding... trying to connect again in 5 seconds...")
+    onRdy = false
+    setTimeout(5000)
+  }
+}
 
 client.on("messageCreate", message => {
   if (message.content === "ping") {
@@ -59,7 +71,6 @@ client.on("messageCreate", message => {
   }
 });
 
-client.login(process.env['token']);
 
 
 
