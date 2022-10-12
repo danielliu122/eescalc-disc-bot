@@ -42,6 +42,7 @@ while (client === undefined && onRdy == false) {
 client.on("messageCreate", message => {
   if (message.content === "ping") {
     message.channel.send("pong");
+    setTimeout(3333)
   }
   const toLoop = message.content.split(" ")
   if (toLoop[0] === 'eescalc') {
@@ -72,6 +73,7 @@ client.on("messageCreate", message => {
     console.log(start, end, simulations, sfp)
     var msg = averageAeesCalc(start, end, simulations, sfp)
     message.channel.send(msg.toString())
+    setTimeout(3333)
   }
 });
 
