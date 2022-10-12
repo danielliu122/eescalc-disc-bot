@@ -6,6 +6,7 @@ const { averageAeesCalc, averageEesCalc } = require('./eescalc.js');
 
 var onRdy = false
 var client = undefined
+var timeoutLen = 0
 
 app.listen(3000, () => {
   console.log("App is running");
@@ -26,12 +27,15 @@ while (client === undefined && onRdy == false) {
     client.on('ready', () => {
       console.log('I am ready!');
       onRdy = true
+      timeoutLen = 5000
     });
   }
   catch {
-    console.log("Client is not responding... trying to connect again in 5 seconds...")
     onRdy = false
-    setTimeout(5000)
+    timeoutLen += 5000
+    if (timeoutLen >= 60000) timeoutLen = 5000
+    console.log("Client is not responding... trying to connect again in + ${timeoutLen} + seconds...")
+    setTimeout(timeoutLen)
   }
 }
 
