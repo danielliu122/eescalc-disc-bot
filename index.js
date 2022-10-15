@@ -1,23 +1,22 @@
 const express = require("express");
 const app = express();
 const Discord = require("discord.js");
-const keepAlive = require('./server.js');
+// const keepAlive = require('./server.js');
 const { averageAeesCalc, averageEesCalc } = require('./eescalc.js');
 
 
-// app.listen(3000, () => {
-//   console.log("App is running");
-// });
+app.listen(3000, () => {
+  console.log("App is running");
+});
 
-// app.get("/", (req, res) => {
-//   res.send("Hello World!");
-// });
+app.get("/", (req, res) => {
+  res.send("Hello World!");
+});
 
 
 const client = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES"] });
 
-keepAlive();
-client.login(process.env['token'])
+
 
 client.on('ready', () => {
   console.log('I am ready!');
@@ -61,7 +60,8 @@ client.on("messageCreate", message => {
   }
 })
 
-
+//keepAlive();
+client.login(process.env['token'])
 
 
 
