@@ -1,48 +1,31 @@
 const express = require("express");
 const app = express();
-const Discord = require("discord.js");
-//const client = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES"] });
 const { averageAeesCalc, averageEesCalc } = require('./eescalc.js');
-
-var onRdy = false
-var client = undefined
-var timeoutLen = 0
 
 app.listen(3000, () => {
   console.log("App is running");
 });
-
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-while (client === undefined && onRdy == false) {
-  try {
-    client = new Discord.Client({
-      intents: 131071,
-      partials: ['CHANNEL', 'GUILD_MEMBER', 'GUILD_SCHEDULED_EVENT', 'MESSAGE', 'REACTION', 'USER']
-    })
-    client.login(process.env['token']);
+const Discord = require("discord.js");
+//const client = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES"] });
 
-    client.on('ready', () => {
-      console.log('I am ready!');
-      onRdy = true
-      timeoutLen = 5000
-    });
-  }
-  catch {
-    onRdy = false
-    // timeoutLen += 5000
-    // if (timeoutLen >= 60000) timeoutLen = 5000
-    // console.log("Client is not responding... trying to connect again in + ${timeoutLen} + seconds...")
-    // //setTimeout(timeoutLen)
-  }
-}
+const client = new Discord.Client({
+  intents: 131071,
+  partials: ['CHANNEL', 'GUILD_MEMBER', 'GUILD_SCHEDULED_EVENT', 'MESSAGE', 'REACTION', 'USER']
+})
+
+client.on('ready', () => {
+  console.log('I am ready!');
+});
+
+
 
 client.on("messageCreate", message => {
   if (message.content === "ping") {
     message.channel.send("pong");
-    //message.timeo
   }
   const toLoop = message.content.split(" ")
   if (toLoop[0] === 'eescalc') {
@@ -73,10 +56,10 @@ client.on("messageCreate", message => {
     console.log(start, end, simulations, sfp)
     var msg = averageAeesCalc(start, end, simulations, sfp)
     message.channel.send(msg.toString())
-    //setTimeout(3333)
   }
 });
 
+client.login(process.env['token']);
 
 
 
